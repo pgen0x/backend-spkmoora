@@ -7,6 +7,7 @@ const swaggerFile = require("./swagger_output.json");
 const log4js = require("./config/log4js");
 const logger = log4js.getLogger("app.js");
 const userRoutes = require("./routes/user");
+const JenisKendaraanRoutes = require("./routes/jenis_kendaraan");
 
 const { buildError } = require("express-ez-405");
 
@@ -26,13 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session(sessOption));
 app.use((req, res, next) => {
-  const allowedOrigins = [
-    "http://127.0.0.1:3001",
-    "http://localhost:3001",
-    "http://54.179.130.93:3001",
-    "https://apibi.codermatter.com",
-    "https://appbi.codermatter.com",
-  ];
+  const allowedOrigins = ["http://localhost:3001"];
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
@@ -50,6 +45,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/jeniskendaraan", JenisKendaraanRoutes);
 
 const awaitHandler = (fn) => {
   return async (req, res, next) => {

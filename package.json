@@ -34,6 +34,7 @@
     "jsonwebtoken": "^9.0.0",
     "log4js": "^6.9.1",
     "mysql2": "^3.2.4",
+    "nodemailer": "^6.9.1",
     "sequelize": "^6.23.0",
     "sequelize-cli": "^6.4.1",
     "swagger-autogen": "^2.23.1",
