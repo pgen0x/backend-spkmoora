@@ -1,0 +1,42 @@
+{
+  "name": "backend-spkmoora",
+  "version": "1.0.0",
+  "description": "API for SPK MOORA",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgen0x/backend-spkmoora.git"
+  },
+  "keywords": [
+    "spk",
+    "moora",
+    "backend",
+    "api"
+  ],
+  "author": "Ilham Nst",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pgen0x/backend-spkmoora/issues"
+  },
+  "homepage": "https://github.com/pgen0x/backend-spkmoora#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-ez-405": "^2.1.2",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.0",
+    "log4js": "^6.9.1",
+    "mysql2": "^3.2.4",
+    "sequelize": "^6.23.0",
+    "sequelize-cli": "^6.4.1",
+    "swagger-autogen": "^2.23.1",
+    "swagger-ui-express": "^4.6.2"
+  }
+}
