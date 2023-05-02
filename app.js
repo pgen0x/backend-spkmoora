@@ -9,6 +9,7 @@ const logger = log4js.getLogger("app.js");
 const userRoutes = require("./routes/user");
 const JenisKendaraanRoutes = require("./routes/jenis_kendaraan");
 const KriteriaPenilaianRoutes = require("./routes/kriteria_penilaian");
+const AturanPenilaianRoutes = require("./routes/aturan_penilaian");
 
 const { buildError } = require("express-ez-405");
 
@@ -48,6 +49,7 @@ app.use((req, res, next) => {
 app.use("/api/user", userRoutes);
 app.use("/api/jeniskendaraan", JenisKendaraanRoutes);
 app.use("/api/kriteriapenilaian", KriteriaPenilaianRoutes);
+app.use("/api/aturanpenilaian", AturanPenilaianRoutes);
 
 const awaitHandler = (fn) => {
   return async (req, res, next) => {
