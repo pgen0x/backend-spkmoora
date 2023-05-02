@@ -3,7 +3,7 @@ const log4js = require("../config/log4js");
 const logger = log4js.getLogger("controller/jenis_kendaraan.js");
 
 exports.createJenisKendaraan = (req, res, next) => {
-  // #swagger.tags = ['JenisKendaraan']
+  // #swagger.tags = ['Jenis Kendaraan']
   // #swagger.summary = 'Create Jenis Kendaraan'
   /* #swagger.security = [{
         "bearerAuth": []
@@ -41,7 +41,7 @@ exports.createJenisKendaraan = (req, res, next) => {
 };
 
 exports.updateJenisKendaraan = async (req, res, next) => {
-  // #swagger.tags = ['JenisKendaraan']
+  // #swagger.tags = ['Jenis Kendaraan']
   // #swagger.summary = 'Update Jenis Kendaraan'
   /* #swagger.security = [{
         "bearerAuth": []
@@ -84,7 +84,7 @@ exports.updateJenisKendaraan = async (req, res, next) => {
 };
 
 exports.getJenisKendaraan = (req, res, next) => {
-  // #swagger.tags = ['JenisKendaraan']
+  // #swagger.tags = ['Jenis Kendaraan']
   // #swagger.summary = 'Get all Jenis Kendaraan'
   /* #swagger.security = [{
         "bearerAuth": []
@@ -108,7 +108,7 @@ exports.getJenisKendaraan = (req, res, next) => {
 };
 
 exports.deleteJenisKendaraan = (req, res, next) => {
-  // #swagger.tags = ['JenisKendaraan']
+  // #swagger.tags = ['Jenis Kendaraan']
   // #swagger.summary = 'Delete Jenis Kendaraan by ID'
   /* #swagger.security = [{
         "bearerAuth": []
