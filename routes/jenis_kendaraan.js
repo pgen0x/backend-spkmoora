@@ -16,6 +16,7 @@ router.put(
   JenisKendaraanController.updateJenisKendaraan
 );
 router.get("/get", checkAuth, JenisKendaraanController.getJenisKendaraan);
+router.get("/getbyid/:id", checkAuth, JenisKendaraanController.getById);
 router.delete(
   "/delete/:id",
   checkAuth,

@@ -16,6 +16,7 @@ router.put(
   AturanPenilaianController.updateAturanPenilaian
 );
 router.get("/get", checkAuth, AturanPenilaianController.getAturanPenilaian);
+router.get("/getbyid/:id", checkAuth, AturanPenilaianController.getById);
 router.delete(
   "/delete/:id",
   checkAuth,

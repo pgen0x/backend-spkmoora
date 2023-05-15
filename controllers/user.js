@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const log4js = require("../config/log4js");
 const logger = log4js.getLogger("controllers/user.js");
-const { Users } = require("../models");
+const { user } = require("../models");
 const nodemailer = require("../config/nodemailer.config");
 const JWT_KEY = process.env.JWT_KEY;
 
@@ -11,9 +11,9 @@ exports.userLogin = (req, res, next) => {
   // #swagger.summary = 'Login user'
   const email = req.body.email;
   const pass = req.body.password;
-  // logger.debug(`email: ${email}, pass: ${pass}`);
   let fetchedUser;
-  Users.findOne({ where: { email } })
+  user
+    .findOne({ where: { email } })
     .then((user) => {
       if (user === null) {
         logger.error(`Auth failed, not found`);
@@ -44,7 +44,7 @@ exports.userLogin = (req, res, next) => {
               token: token,
               expiresIn: 86400,
               user: {
-                fetchedUser,
+                email: fetchedUser.email,
               },
             });
           });
@@ -66,7 +66,7 @@ exports.forgetPassword = async (req, res, next) => {
   // #swagger.summary = 'Reset password'
 
   const email = req.body.email;
-  Users.findOne({ where: { email } }).then((result) => {
+  user.findOne({ where: { email } }).then((result) => {
     if (!result) {
       return res.status(400).send({
         error: {
@@ -113,9 +113,10 @@ exports.VerifyResetPassword = (req, res, next) => {
   // #swagger.tags = ['User']
   // #swagger.summary = 'Verify password a user with token'
 
-  Users.findOne({
-    where: { token: req.params.token },
-  })
+  user
+    .findOne({
+      where: { token: req.params.token },
+    })
     .then((user) => {
       if (!user) {
         return res.status(400).send({
@@ -157,7 +158,7 @@ exports.resetpassword = async (req, res, next) => {
     });
   }
 
-  Users.findOne({ where: { token: token } }).then((user) => {
+  user.findOne({ where: { token: token } }).then((user) => {
     if (!user) {
       return res.status(400).send({
         error: {
@@ -187,3 +188,4 @@ exports.resetpassword = async (req, res, next) => {
     }
   });
 };
+

@@ -2,21 +2,27 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Kriteria_Penilaians', {
+    await queryInterface.createTable('data', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      kode_kriteria: {
+      nama_rute: {
         type: Sequelize.STRING
       },
-      nama_kriteria: {
+      tanggal_pengiriman: {
+        type: Sequelize.DATE
+      },
+      total_berat_paket: {
+        type: Sequelize.INTEGER
+      },
+      tujuan: {
         type: Sequelize.STRING
       },
-      bobot: {
-        type: Sequelize.STRING
+      total_paket: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -29,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Kriteria_Penilaians');
+    await queryInterface.dropTable('data');
   }
 };

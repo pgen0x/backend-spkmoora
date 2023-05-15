@@ -1,47 +1,76 @@
-const { Kriteria_Penilaians } = require("../models");
+const { kriteria_penilaian } = require("../models");
 const log4js = require("../config/log4js");
 const logger = log4js.getLogger("controller/kriteria_penilaian.js");
 
-exports.createKriteriaPenilaian = (req, res, next) => {
+exports.createKriteriaPenilaian = async (req, res, next) => {
   // #swagger.tags = ['Kriteria Penilaian']
   // #swagger.summary = 'Create Kriteria Penilaian'
   /* #swagger.security = [{
         "bearerAuth": []
       }] 
   */
-  const kode_kriteria = req.body.kode_kriteria;
-  const nama_kriteria = req.body.nama_kriteria;
-  const bobot = req.body.bobot;
+  try {
+    const { kode_kriteria, nama_kriteria, bobot } = req.body;
 
-  const datakriteria_penilaians = {
-    kode_kriteria,
-    nama_kriteria,
-    bobot,
-  };
-  Kriteria_Penilaians.build(datakriteria_penilaians)
-    .save()
-    .then((createdKriteriaPenilaian) => {
-      res.status(201).json({
-        success: {
-          messages: "Data Kriteria Penilaian Berhasil Ditambahkan",
-        },
-        data: {
-          id: createdKriteriaPenilaian.id,
-          kode_kriteria: createdKriteriaPenilaian.kode_kriteria,
-          nama_kriteria: createdKriteriaPenilaian.nama_kriteria,
-          bobot: createdKriteriaPenilaian.bobot,
-        },
-      });
-    })
-    .catch((error) => {
-      logger.error(`error: ${error}`);
-      res.status(500).json({
+    // Check if kode kriteria is valid and not duplicated
+    const validKodeKriteria = ["C1", "C2", "C3"];
+    if (!validKodeKriteria.includes(kode_kriteria)) {
+      return res.status(400).json({
         error: {
-          messages: "Gagal Menambahkan Kriteria Penilaian",
+          messages: "Kode Kriteria harus C1, C2, or C3",
         },
       });
+    }
+    const isKodeKriteriaDuplicated = await kriteria_penilaian.findOne({
+      where: { kode_kriteria },
     });
+    if (isKodeKriteriaDuplicated) {
+      return res.status(400).json({
+        error: {
+          messages: "Kode Kriteria sudah ada, silahkan gunakan kode yang lain",
+        },
+      });
+    }
+
+    // Check if number of kriteria penilaian is not more than 3
+    const countKriteriaPenilaian = await kriteria_penilaian.count();
+    if (countKriteriaPenilaian >= 3) {
+      return res.status(400).json({
+        error: {
+          messages: "Kriteria dibatasi maksimal 3 kriteria",
+        },
+      });
+    }
+
+    const datakriteria_penilaians = {
+      kode_kriteria,
+      nama_kriteria,
+      bobot,
+    };
+    const createdKriteriaPenilaian = await kriteria_penilaian.create(
+      datakriteria_penilaians
+    );
+    res.status(201).json({
+      success: {
+        messages: "Data Kriteria Penilaian Berhasil Ditambahkan",
+      },
+      data: {
+        id: createdKriteriaPenilaian.id,
+        kode_kriteria: createdKriteriaPenilaian.kode_kriteria,
+        nama_kriteria: createdKriteriaPenilaian.nama_kriteria,
+        bobot: createdKriteriaPenilaian.bobot,
+      },
+    });
+  } catch (error) {
+    logger.error(`error: ${error}`);
+    res.status(500).json({
+      error: {
+        messages: "Gagal Menambahkan Kriteria Penilaian",
+      },
+    });
+  }
 };
+
 
 exports.updateKriteriaPenilaian = async (req, res, next) => {
   // #swagger.tags = ['Kriteria Penilaian']
@@ -53,7 +82,7 @@ exports.updateKriteriaPenilaian = async (req, res, next) => {
   const { kode_kriteria, nama_kriteria, bobot } = req.body;
 
   try {
-    const KriteriaPenilaian = await Kriteria_Penilaians.findByPk(req.params.id);
+    const KriteriaPenilaian = await kriteria_penilaian.findByPk(req.params.id);
 
     if (!KriteriaPenilaian) {
       return res.status(404).json({
@@ -94,11 +123,39 @@ exports.getKriteriaPenilaian = (req, res, next) => {
         "bearerAuth": []
       }] 
   */
-  Kriteria_Penilaians.findAll({
+  kriteria_penilaian.findAll({
     limit: 1000,
   })
     .then((result) => {
       res.status(200).json(result);
+    })
+    .catch((error) => {
+      logger.error(`error: ${error}`);
+      res.status(500).json({
+        error: {
+          messages: "Gagal mengambil data",
+        },
+      });
+    });
+};
+
+exports.getById = (req, res, next) => {
+  // #swagger.tags = ['Kriteria Penilaian']
+  // #swagger.summary = 'Get Kriteria Penilaian by ID  [admin]'
+  /* #swagger.security = [{
+        "bearerAuth": []
+      }] 
+  */
+  kriteria_penilaian
+    .findByPk(req.params.id)
+    .then((data) => {
+      if (data) {
+        res.status(200).json(data);
+      } else {
+        res
+          .status(404)
+          .json({ error: { messages: "Kriteria Penilaian tidak ditemukan" } });
+      }
     })
     .catch((error) => {
       logger.error(`error: ${error}`);
@@ -118,7 +175,7 @@ exports.deleteKriteriaPenilaian = (req, res, next) => {
       }] 
   */
   let id = req.params.id;
-  Kriteria_Penilaians.destroy({ where: { id } })
+  kriteria_penilaian.destroy({ where: { id } })
     .then((result) => {
       logger.debug(result);
       if (result > 0) {

@@ -1,4 +1,4 @@
-const { Aturan_Penilaians } = require("../models");
+const { aturan_penilaian } = require("../models");
 const log4js = require("../config/log4js");
 const logger = log4js.getLogger("controller/aturan_penilaian.js");
 
@@ -13,12 +13,13 @@ exports.createAturanPenilaian = (req, res, next) => {
   const nilai = req.body.nilai;
   const descnilai = req.body.descnilai;
 
-  const dataaturan_penilaians = {
+  const dataaturan_penilaian = {
     keterangan,
     nilai,
     descnilai,
   };
-  Aturan_Penilaians.build(dataaturan_penilaians)
+  aturan_penilaian
+    .build(dataaturan_penilaian)
     .save()
     .then((createdAturanPenilaian) => {
       res.status(201).json({
@@ -53,7 +54,7 @@ exports.updateAturanPenilaian = async (req, res, next) => {
   const { keterangan, nilai, descnilai } = req.body;
 
   try {
-    const AturanPenilaian = await Aturan_Penilaians.findByPk(req.params.id);
+    const AturanPenilaian = await aturan_penilaian.findByPk(req.params.id);
 
     if (!AturanPenilaian) {
       return res.status(404).json({
@@ -94,11 +95,40 @@ exports.getAturanPenilaian = (req, res, next) => {
         "bearerAuth": []
       }] 
   */
-  Aturan_Penilaians.findAll({
-    limit: 1000,
-  })
+  aturan_penilaian
+    .findAll({
+      limit: 1000,
+    })
     .then((result) => {
       res.status(200).json(result);
+    })
+    .catch((error) => {
+      logger.error(`error: ${error}`);
+      res.status(500).json({
+        error: {
+          messages: "Gagal mengambil data",
+        },
+      });
+    });
+};
+
+exports.getById = (req, res, next) => {
+  // #swagger.tags = ['Aturan Penilaian']
+  // #swagger.summary = 'Get Aturan Penilaian by ID  [admin]'
+  /* #swagger.security = [{
+        "bearerAuth": []
+      }] 
+  */
+  aturan_penilaian
+    .findByPk(req.params.id)
+    .then((aturan_penilaian) => {
+      if (aturan_penilaian) {
+        res.status(200).json(aturan_penilaian);
+      } else {
+        res
+          .status(404)
+          .json({ error: { messages: "Aturan penilaian tidak ditemukan" } });
+      }
     })
     .catch((error) => {
       logger.error(`error: ${error}`);
@@ -118,7 +148,8 @@ exports.deleteAturanPenilaian = (req, res, next) => {
       }] 
   */
   let id = req.params.id;
-  Aturan_Penilaians.destroy({ where: { id } })
+  aturan_penilaian
+    .destroy({ where: { id } })
     .then((result) => {
       logger.debug(result);
       if (result > 0) {

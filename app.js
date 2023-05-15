@@ -10,6 +10,10 @@ const userRoutes = require("./routes/user");
 const JenisKendaraanRoutes = require("./routes/jenis_kendaraan");
 const KriteriaPenilaianRoutes = require("./routes/kriteria_penilaian");
 const AturanPenilaianRoutes = require("./routes/aturan_penilaian");
+const BobotKriteriaRoutes = require("./routes/bobot_kriteria");
+const PerhitunganRoutes = require("./routes/perhitungan");
+
+const DataRoutes = require("./routes/data");
 
 const { buildError } = require("express-ez-405");
 
@@ -50,6 +54,9 @@ app.use("/api/user", userRoutes);
 app.use("/api/jeniskendaraan", JenisKendaraanRoutes);
 app.use("/api/kriteriapenilaian", KriteriaPenilaianRoutes);
 app.use("/api/aturanpenilaian", AturanPenilaianRoutes);
+app.use("/api/bobotkriteria", BobotKriteriaRoutes);
+app.use("/api/data", DataRoutes);
+app.use("/api/perhitungan", PerhitunganRoutes);
 
 const awaitHandler = (fn) => {
   return async (req, res, next) => {
