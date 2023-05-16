@@ -26,7 +26,7 @@ function verifyToken(req, res, next) {
   try {
     // Verify the token using the JWT_SECRET
     const decoded = jwt.verify(bearerToken, JWT_KEY);
-    req.user = decoded;
+    req.userData = decoded;
     next();
   } catch (err) {
     return res

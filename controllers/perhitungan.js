@@ -36,10 +36,18 @@ function hitungSkor(nilai, bobotKriteria) {
 function tentukanKeterangan(nilai, aturan) {
   if (aturan.descnilai === ">=") {
     return nilai >= aturan.nilai ? aturan.keterangan : null;
+  } else if (aturan.descnilai === ">") {
+    return nilai > aturan.nilai ? aturan.keterangan : null;
+  } else if (aturan.descnilai === "<=") {
+    return nilai <= aturan.nilai ? aturan.keterangan : null;
   } else if (aturan.descnilai === "<") {
     return nilai < aturan.nilai ? aturan.keterangan : null;
+  } else if (aturan.descnilai === "==") {
+    return nilai == aturan.nilai ? aturan.keterangan : null;
+  } else if (aturan.descnilai === "!=") {
+    return nilai != aturan.nilai ? aturan.keterangan : null;
   } else {
-    return "Descnilai tidak support! hanya gunakan >= dan <";
+    return "Terjadi kesalahan dalam menentukan keterangan";
   }
 }
 
@@ -291,7 +299,7 @@ exports.Simpan = async (req, res, next) => {
   const dataValues = body.map((item) => ({
     nama_rute: item.nama_rute,
     tanggal_pengiriman: item.tanggal_pengiriman,
-    yi: item.yi,
+    yi: parseFloat(item.yi),
     total_berat_paket: item.total_berat_paket,
     total_paket: item.total_paket,
     tujuan: item.tujuan,

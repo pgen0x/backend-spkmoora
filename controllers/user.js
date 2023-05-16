@@ -189,3 +189,49 @@ exports.resetpassword = async (req, res, next) => {
   });
 };
 
+exports.updateUser = async (req, res, next) => {
+  // #swagger.tags = ['User']
+  // #swagger.summary = 'Update user'
+  /* #swagger.security = [{
+        "bearerAuth": []
+      }] 
+  */
+
+  const { userId } = req.userData;
+  const { newEmail, newPassword } = req.body;
+
+  try {
+    const findUser = await user.findByPk(userId);
+    if (!findUser) {
+      return res.status(404).json({
+        error: {
+          messages: "User tidak ditemukan",
+        },
+      });
+    }
+
+    if (newEmail) {
+      findUser.email = newEmail;
+    }
+
+    if (newPassword) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      findUser.password = hashedPassword;
+    }
+
+    await findUser.save();
+
+    res.status(200).json({
+      success: {
+        messages: "Berhasil mengubah data user",
+      },
+    });
+  } catch (error) {
+    logger.error(`error: ${error}`);
+    res.status(500).json({
+      error: {
+        messages: "Gagal mengubah data",
+      },
+    });
+  }
+};
