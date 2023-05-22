@@ -26,8 +26,8 @@ module.exports.sendForgetPassword = (name, email, tokenForget) => {
       html: `<h1>Pemulihan Kata Sandi</h1>
         <h2>Hello ${name}</h2>
         <p>Kami tidak bisa begitu saja mengirimkan kata sandi lama Anda. Tautan unik untuk mengatur ulang kata sandi Anda telah dibuat untuk Anda. Untuk mengatur ulang kata sandi Anda, klik tautan berikut.</p>
+         <a href=${process.env.HOST_API}/api/user/verifyresetpassword/${tokenForget}> Klik Disini</a>
         <p>Jika anda tidak merasa melakukan ini, harap abaikan pesan ini.</p>
-        <a href=${process.env.HOST_API}/api/user/verifyresetpassword/${tokenForget}> Klik Disini</a>
         </div>`,
     })
     .catch((err) => logger.error(err));

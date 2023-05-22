@@ -173,7 +173,7 @@ exports.resetpassword = async (req, res, next) => {
         .then((result) => {
           return res.status(200).send({
             success: {
-              messages: "Kata sandi berhasil di ubah",
+              messages: "Kata sandi berhasil di ubah, Silahkan login kembali",
             },
           });
         })
