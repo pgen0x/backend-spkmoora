@@ -231,7 +231,7 @@ exports.Hitung = async (req, res, next) => {
 
       // Tambahkan jenis kendaraan pada data
       // hasilPenilaian[i].jenis_kendaraan = jenis_kendaraan;
-      hasilPenilaian[i].jenisKendaraanId = jenisKendaraanId;
+      hasilPenilaian[i].jenis_kendaraan = jenisKendaraanId;
     }
 
     res.status(200).json({
